@@ -1,0 +1,59 @@
+<view class="page">
+  <view class="topbar">
+    <view>
+      <text class="title">中国旅行地图</text>
+      <text class="subtitle">{{visitedCount}} / {{cities.length}} 个城市已点亮</text>
+    </view>
+    <button class="reset-btn" bindtap="resetVisited">重置</button>
+  </view>
+
+  <map
+    id="chinaMap"
+    class="map"
+    longitude="{{mapCenter.longitude}}"
+    latitude="{{mapCenter.latitude}}"
+    scale="{{mapScale}}"
+    markers="{{markers}}"
+    show-location="{{false}}"
+    bindmarkertap="onMarkerTap"
+  />
+
+  <view class="city-list">
+    <view
+      wx:for="{{cities}}"
+      wx:key="id"
+      class="city-chip {{item.visited ? 'city-chip--visited' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="selectCityFromList"
+    >
+      <view class="dot"></view>
+      <text>{{item.name}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{selectedCity}}" class="mask" bindtap="closeCityPanel">
+    <view class="panel" catchtap="noop">
+      <view class="panel-head">
+        <view>
+          <text class="city-name">{{selectedCity.name}}</text>
+          <text class="province">{{selectedCity.province}}</text>
+        </view>
+        <button class="close-btn" bindtap="closeCityPanel">×</button>
+      </view>
+
+      <view class="status-row">
+        <text class="status-label">旅行状态</text>
+        <text class="status {{selectedVisited ? 'status--visited' : ''}}">
+          {{selectedVisited ? '已旅游' : '未旅游'}}
+        </text>
+      </view>
+
+      <button
+        class="primary-btn {{selectedVisited ? 'primary-btn--visited' : ''}}"
+        bindtap="toggleSelectedCity"
+      >
+        {{selectedVisited ? '标记为未旅游' : '标记为已旅游'}}
+      </button>
+    </view>
+  </view>
+</view>
